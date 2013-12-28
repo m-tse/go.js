@@ -26,6 +26,10 @@
           {{/view}}
 
           {{#view App.NavView}}
+            {{#linkTo "games"}}Games{{/linkTo}}
+          {{/view}}
+
+          {{#view App.NavView}}
             {{#linkTo "about"}}About{{/linkTo}}
           {{/view}}
 
@@ -82,6 +86,44 @@
     
   </script>
 
+  <script type="text/x-handlebars" data-template-name="games/index">
+
+    {{#if gamesPresent}}
+
+      <p>Nr of games = {{content.length}}</p>
+
+      {{#if itemsSelected}}
+        <p><button {{action 'removeSelectedGames'}}>Remove {{editCounter}} selected games</button></p>
+      {{/if}}
+
+      <table class="table table-hover">
+      <tr>
+        <th>Selected</th>
+        <th>name</th>
+        <th>boardSize</th>
+        <th></th>
+        <th></th>
+      </tr>
+        {{#each game in controller itemController="gamesEdit"}}
+          <tr {{bindAttr class="selected:warning"}}>
+          <td>{{view Ember.Checkbox checkedBinding="selected"}}</td>
+          <td>{{game.name}}</td>
+          <td>{{game.boardSize}}</td>
+          <td>{{#linkTo "games.edit" game}}<img src="images/edit-icon.png"/>{{/linkTo}}</td>
+          <td><a href="#" {{action removeItem game}}><img src="images/delete-icon.png" border="0"/></a></td>
+          </tr>
+        {{/each}}
+      </table>
+
+    {{else}}
+      No games present.
+    {{/if}}
+
+    <p>{{#linkTo "games.new"}}<img src="images/add-icon.png"/> New game{{/linkTo}}</p>
+
+    
+  </script>
+
   <script type="text/x-handlebars" data-template-name="_locationForm" >
       <form class="form-horizontal">
       <div class="control-group">
@@ -105,6 +147,23 @@
     </form>
   </script>
 
+  <script type="text/x-handlebars" data-template-name="_gameForm" >
+      <form class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label" for="name">Name</label>
+        <div class="controls">
+          {{view Ember.TextField valueBinding="name"}}
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="boardSize">Board Size</label>
+        <div class="controls">
+          {{view Ember.TextField valueBinding="boardSize"}}
+        </div>
+      </div>
+    </form>
+  </script>
+
   <script type="text/x-handlebars" data-template-name="locations/edit" >
     
     {{#if controller.isNew}}
@@ -114,6 +173,21 @@
     {{/if}}
 
       {{partial "locationForm"}}
+
+      <p>
+        <button {{action updateItem this}}>Update record</button>
+      </p>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="games/edit" >
+    
+    {{#if controller.isNew}}
+      <h1>New game</h1>
+    {{else}}
+      <h1>Edit game</h1>
+    {{/if}}
+
+      {{partial "gameForm"}}
 
       <p>
         <button {{action updateItem this}}>Update record</button>
