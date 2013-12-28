@@ -13,26 +13,25 @@
   <div class="container">
     <h1>Ember.js - Express REST API combo</h1>
 
-        <div class="navbar">
-          <div class="navbar-inner">
-            <ul class="nav">
-              
-              {{#view App.NavView}}
-                {{#linkTo "index"}}Home{{/linkTo}}
-              {{/view}}
-              
-              {{#view App.NavView}}
-                {{#linkTo "locations"}}Locations{{/linkTo}}
-              {{/view}}
-              
+    <div class="navbar">
+      <div class="navbar-inner">
+        <ul class="nav">
+          
+          {{#view App.NavView}}
+            {{#linkTo "index"}}Home{{/linkTo}}
+          {{/view}}
+          
+          {{#view App.NavView}}
+            {{#linkTo "locations"}}Locations{{/linkTo}}
+          {{/view}}
 
-              {{#view App.NavView}}
-                {{#linkTo "about"}}About{{/linkTo}}
-              {{/view}}
+          {{#view App.NavView}}
+            {{#linkTo "about"}}About{{/linkTo}}
+          {{/view}}
 
-            </ul>
-          </div>
-        </div>
+        </ul>
+      </div>
+    </div>
     {{outlet}}
   </div>
   </script>  
@@ -125,11 +124,11 @@
       <p>This is the about page.</p>
   </script>
 
-  <script src="js/jquery-1.9.1.js"></script>
-  <script src="js/handlebars-1.0.0-rc.4.js"></script>
-  <script src="js/ember-1.0.0-rc.7.js"></script>
-  <script src="js/ember-data-0.13.js"></script>
-  <script src="js/bootstrap.js"></script>
+  <script src="js/lib/jquery-1.9.1.js"></script>
+  <script src="js/lib/handlebars-1.0.0-rc.4.js"></script>
+  <script src="js/lib/ember-1.0.0-rc.7.js"></script>
+  <script src="js/lib/ember-data-0.13.js"></script>
+  <script src="js/lib/bootstrap.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
