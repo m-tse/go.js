@@ -21,7 +21,7 @@ var allowCrossDomain = function(req, res, next) {
       next();
     }
 };
-sdfgsdfgsfg
+
 app.configure(function () {
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
