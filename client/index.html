@@ -115,8 +115,17 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="game">
-    <h1>Game Name: {{name}}</h1>
-    <h1>Board Size: {{boardSize}}</h1>
+    <div class="game-container">
+      <div class="row">
+        <div class="col-md-7">
+          <h1>Game Name: {{name}}</h1>
+          <h1>Board Size: {{boardSize}}</h1>
+        </div>
+        <div class="col-md-5">
+        Menu
+        </div>
+      </div>
+    </div>
   </script>
 
   <script type="text/x-handlebars" data-template-name="about" >
