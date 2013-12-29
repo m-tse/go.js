@@ -63,7 +63,7 @@
         {{#each itemController="gamesEdit"}}
           <tr {{bindAttr class="selected:warning"}}>
           <td>{{view Ember.Checkbox checkedBinding="selected"}}</td>
-          <td>{{name}}</td>
+          <td>{{#linkTo "game" this}}{{name}}{{/linkTo}}</td>
           <td>{{boardSize}}</td>
           <td>{{#linkTo "games.edit" this}}<img src="images/edit-icon.png"/>{{/linkTo}}</td>
           <td><a href="#" {{action removeItem this}}><img src="images/delete-icon.png" border="0"/></a></td>
@@ -112,6 +112,11 @@
       <p>
         <button {{action updateItem this}}>Update record</button>
       </p>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="game">
+    <h1>Game Name: {{name}}</h1>
+    <h1>Board Size: {{boardSize}}</h1>
   </script>
 
   <script type="text/x-handlebars" data-template-name="about" >

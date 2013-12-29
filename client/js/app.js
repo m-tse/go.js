@@ -7,7 +7,9 @@ App.Router.map(function() {
   this.resource("games", function(){
     this.route("new", {path:"/new"});
     this.route("edit", {path: "/:game_id" });
-  })
+  });
+  this.resource('game', { path: '/game/:game_id' });
+
 
 });
 
@@ -53,11 +55,9 @@ App.GamesIndexRoute = Ember.Route.extend({
 App.GamesEditRoute = Ember.Route.extend({
   setupController: function(controller, model) {
     this.controllerFor('games.edit').setProperties({isNew: false,content:model});
-  },
-
-  renderTemplate: function() {
-    this.render('games.edit',{into:'application'});
   }
+
+
 });
 
 App.GamesNewRoute = Ember.Route.extend({
@@ -121,6 +121,12 @@ App.GamesIndexController = Ember.ArrayController.extend({
     return true;
   }.property("content.@each")
   //}.property("content.isLoaded")
+});
+
+App.GameIndexRoute = Ember.Route.extend({
+  model: function(params) {
+    return this.store.find('game', params.game_id);
+  }
 });
 
 
