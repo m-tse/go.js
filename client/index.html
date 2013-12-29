@@ -60,13 +60,13 @@
         <th></th>
         <th></th>
       </tr>
-        {{#each game in controller itemController="gamesEdit"}}
+        {{#each itemController="gamesEdit"}}
           <tr {{bindAttr class="selected:warning"}}>
           <td>{{view Ember.Checkbox checkedBinding="selected"}}</td>
-          <td>{{game.name}}</td>
-          <td>{{game.boardSize}}</td>
-          <td>{{#linkTo "games.edit" game}}<img src="images/edit-icon.png"/>{{/linkTo}}</td>
-          <td><a href="#" {{action removeItem game}}><img src="images/delete-icon.png" border="0"/></a></td>
+          <td>{{name}}</td>
+          <td>{{boardSize}}</td>
+          <td>{{#linkTo "games.edit" this}}<img src="images/edit-icon.png"/>{{/linkTo}}</td>
+          <td><a href="#" {{action removeItem this}}><img src="images/delete-icon.png" border="0"/></a></td>
           </tr>
         {{/each}}
       </table>
@@ -122,7 +122,7 @@
   <script src="js/lib/jquery-2.0.3.min.map"></script>  
   <script src="js/lib/handlebars-v1.2.0.js"></script>
   <script src="js/lib/ember-1.2.0.js"></script>
-  <script src="js/lib/ember-data-0.13.js"></script>
+  <script src="js/lib/ember-data.js"></script>
   <script src="js/lib/bootstrap.js"></script>
   <script src="js/app.js"></script>
 </body>

@@ -11,22 +11,32 @@ App.Router.map(function() {
 
 });
 
-App.Adapter = DS.RESTAdapter.extend({
-  serializer: DS.RESTSerializer.extend({
-    primaryKey: function (type){
-      return '_id';
-   }
-  })
+
+App.ApplicationAdapter = DS.RESTAdapter.extend({
+  host: 'http://localhost:3000'
 });
 
-App.Store = DS.Store.extend({
-  revision: 12,
-  adapter: 'App.Adapter'
+App.GameSerializer = DS.RESTSerializer.extend({
+  // This method will be called 3 times: once for the post, and once
+  // for each of the comments
+  normalize: function(type, hash, property) {
+    // property will be "post" for the post and "comments" for the
+    // comments (the name in the payload)
+
+    // normalize the `_id`
+    var json = { id: hash._id };
+    delete hash._id;
+
+    // copy other properties
+    for (var prop in hash) {
+      json[prop] = hash[prop]; 
+    }
+
+    // delegate to any type-specific normalizations
+    return this._super(type, json, property);
+  }
 });
 
-DS.RESTAdapter.reopen({
-  url: 'http://localhost:3000'
-});
 
 App.Game = DS.Model.extend({
   name: DS.attr('string'),
@@ -35,18 +45,14 @@ App.Game = DS.Model.extend({
 
 
 App.GamesIndexRoute = Ember.Route.extend({
-  setupController: function(controller) {
-    var games = App.Game.find();
-    games.on('didLoad', function() {
-      console.log(" +++ Games loaded!");
-    });
-    controller.set('content', games);
+  model: function() {
+    return this.store.find('game');
   }
 });
 
 App.GamesEditRoute = Ember.Route.extend({
   setupController: function(controller, model) {
-      this.controllerFor('games.edit').setProperties({isNew: false,content:model});
+    this.controllerFor('games.edit').setProperties({isNew: false,content:model});
   },
 
   renderTemplate: function() {
@@ -56,7 +62,7 @@ App.GamesEditRoute = Ember.Route.extend({
 
 App.GamesNewRoute = Ember.Route.extend({
   setupController: function(controller, model) {
-        this.controllerFor('games.edit').setProperties({isNew: true,content:App.Game.createRecord()});
+    this.controllerFor('games.edit').setProperties({isNew: true,content:this.store.createRecord('game')});
   },
   renderTemplate: function() {
     this.render('games.edit',{into:'application'});
@@ -66,7 +72,7 @@ App.GamesNewRoute = Ember.Route.extend({
 
 App.GamesEditController = Ember.ObjectController.extend({
   updateItem: function(game) {
-    game.transaction.commit();
+    game.save();
     this.get("target").transitionTo("games");
   },
 
@@ -87,12 +93,12 @@ App.GamesIndexController = Ember.ArrayController.extend({
   }.property('editCounter'),
 
   removeItem: function(game) {
-    game.on("didDelete", this, function() {
-      console.log("record deleted");
-    });
+    // game.on("didDelete", this, function() {
+    //   console.log("record deleted");
+    // });
 
-    game.deleteRecord();
-    game.transaction.commit();
+    game.destroyRecord();
+    // game.transaction.commit();
   },
 
   removeSelectedGames: function() {
@@ -109,9 +115,10 @@ App.GamesIndexController = Ember.ArrayController.extend({
   },
 
   gamesPresent: function() {
-    var itemsPresent = this.get('content').content.length > 0;
-    console.log(" +++ Computed gamesPresent prop with value " + itemsPresent);
-    return itemsPresent;
+    // var itemsPresent = this.get('content').content.length > 0;
+    // console.log(" +++ Computed gamesPresent prop with value " + itemsPresent);
+    // return itemsPresent;
+    return true;
   }.property("content.@each")
   //}.property("content.isLoaded")
 });
@@ -124,19 +131,6 @@ Ember.Handlebars.registerBoundHelper('gamesPresent',
       return true;
     }
 );
-
-App.GameIndexRoute = Ember.Route.extend({
-  setupController: function(controller) {
-    var games = App.Game.find();
-    games.on('didLoad', function() {
-      console.log(" +++ Games loaded!");
-    });
-    controller.set('content', games);
-  },
-  renderTemplate: function() {
-    this.render('game.index',{into:'application'});
-  }
-});
 
 App.NavView = Ember.View.extend({
     tagName: 'li',
