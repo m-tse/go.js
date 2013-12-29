@@ -5,7 +5,6 @@ App.Router.map(function() {
   this.route("about", { path: "/about" });
 
   this.resource("games", function(){
-    console.log("Inside games...");
     this.route("new", {path:"/new"});
     this.route("edit", {path: "/:game_id" });
   })
@@ -42,9 +41,6 @@ App.GamesIndexRoute = Ember.Route.extend({
       console.log(" +++ Games loaded!");
     });
     controller.set('content', games);
-  },
-  renderTemplate: function() {
-    this.render('games.index',{into:'application'});
   }
 });
 
@@ -128,6 +124,19 @@ Ember.Handlebars.registerBoundHelper('gamesPresent',
       return true;
     }
 );
+
+App.GameIndexRoute = Ember.Route.extend({
+  setupController: function(controller) {
+    var games = App.Game.find();
+    games.on('didLoad', function() {
+      console.log(" +++ Games loaded!");
+    });
+    controller.set('content', games);
+  },
+  renderTemplate: function() {
+    this.render('game.index',{into:'application'});
+  }
+});
 
 App.NavView = Ember.View.extend({
     tagName: 'li',
