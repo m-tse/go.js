@@ -19,21 +19,13 @@ App.ApplicationAdapter = DS.RESTAdapter.extend({
 });
 
 App.GameSerializer = DS.RESTSerializer.extend({
-  // This method will be called 3 times: once for the post, and once
-  // for each of the comments
   normalize: function(type, hash, property) {
-    // property will be "post" for the post and "comments" for the
-    // comments (the name in the payload)
-
-    // normalize the `_id`
     var json = { id: hash._id };
     delete hash._id;
-
     // copy other properties
     for (var prop in hash) {
-      json[prop] = hash[prop]; 
+      json[prop] = hash[prop];
     }
-
     // delegate to any type-specific normalizations
     return this._super(type, json, property);
   }
@@ -42,7 +34,7 @@ App.GameSerializer = DS.RESTSerializer.extend({
 
 App.Game = DS.Model.extend({
   name: DS.attr('string'),
-  boardSize: DS.attr('string')
+  boardSize: DS.attr('number')
 });
 
 
@@ -105,9 +97,9 @@ App.GamesIndexController = Ember.ArrayController.extend({
     arr = this.filterProperty('selected', true);
     if (arr.length==0) {
         output = "nothing selected";
-    } else { 
+    } else {
         output = "";
-        for (i=0 ; i<arr.length ; i++) { 
+        for (i=0 ; i<arr.length ; i++) {
           arr[i].deleteRecord()
           arr[i].store.commit();
         }
@@ -123,14 +115,48 @@ App.GamesIndexController = Ember.ArrayController.extend({
   //}.property("content.isLoaded")
 });
 
+App.BoardState = Ember.Object.extend({
+  init: function(){
+    var boardSize = this.get('boardSize')
+    for (var i=0;i<boardSize;i++){
+      rowArray = [];
+      for (var j=0;j<boardSize;j++){
+        rowArray.push(0);
+      };
+      this.x.push(rowArray);
+    }
+
+    },
+  x: []
+});
+
 App.GameIndexRoute = Ember.Route.extend({
   model: function(params) {
     return this.store.find('game', params.game_id);
+  },
+  setupController: function(controller, model) {
+    controller.set('model', model)
   }
 });
 
+App.GameController = Ember.ObjectController.extend({
+  secondName: function(){return this.get('name')+'45'}.property('model.secondName'),
+  boardState: function(){
+    var boardSize = this.get('boardSize');
+    var boardArray = [];
+    for (var i=0;i<boardSize;i++){
+      var rowArray = [];
+      for (var j=0;j<boardSize;j++){
+        rowArray.push('0');
+      };
+      boardArray.push(rowArray);
+    }
+    return boardArray;
+  }.property('model.boardState')
+})
 
-Ember.Handlebars.registerBoundHelper('gamesPresent', 
+
+Ember.Handlebars.registerBoundHelper('gamesPresent',
     function(myBinding, options) {
       console.log(myBinding);
       console.log(options);

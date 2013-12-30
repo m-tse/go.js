@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Go.js</title>
   <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
-  <link rel="stylesheet" href="css/style.less" media="screen">    
+  <link rel="stylesheet" href="css/style.less" media="screen">
 </head>
 <body>
 
@@ -17,7 +17,7 @@
           <a class="navbar-brand">Go.js</a>
         </div>
         <ul class="nav navbar-nav">
-          
+
           {{#view App.NavView}}
             {{#linkTo "index"}}Home{{/linkTo}}
           {{/view}}
@@ -35,7 +35,7 @@
     </nav>
     {{outlet}}
   </div>
-  </script>  
+  </script>
 
   <script type="text/x-handlebars" data-template-name="index" >
     <p>This is the homepage....</p>
@@ -78,7 +78,7 @@
 
     <p>{{#linkTo "games.new"}}<img src="images/add-icon.png"/> New game{{/linkTo}}</p>
 
-    
+
   </script>
 
 
@@ -101,7 +101,7 @@
 
 
   <script type="text/x-handlebars" data-template-name="games/edit" >
-    
+
     {{#if controller.isNew}}
       <h1>New game</h1>
     {{else}}
@@ -122,12 +122,19 @@
           <div class="game-info">
             <h3>Game Name: {{name}}</h3>
             <h3>Board Size: {{boardSize}}</h3>
+            <h3>secondname: {{secondName}}</h3>
           </div>
           <div class="board">
-            <table>
+            <table >
+              {{#each row in boardState}}
               <tr>
+                {{#each value in row}}
                 <td>
+                  0
+                </td>
+                {{/each}}
               <tr>
+              {{/each}}
             </table>
           </div>
         </div>
@@ -143,12 +150,12 @@
   </script>
 
   <script src="js/lib/jquery-2.0.3.min.js"></script>
-  <script src="js/lib/jquery-2.0.3.min.map"></script>  
+  <script src="js/lib/jquery-2.0.3.min.map"></script>
   <script src="js/lib/handlebars-v1.2.0.js"></script>
   <script src="js/lib/ember-1.2.0.js"></script>
   <script src="js/lib/ember-data.js"></script>
   <script src="js/lib/bootstrap.js"></script>
-  <script src="js/less-1.5.0.min.js"></script>
-  <script src="js/app.js"></script>  
+  <script src="js/lib/less-1.5.0.min.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
